@@ -2,14 +2,15 @@ import * as React from "react";
 import styled from "styled-components";
 
 const StyledButton = styled.button`
-  background-color: dodgerblue;
+  background-color: royalblue;
   border: none;
+  border-radius: 50vh;
   box-shadow: none;
   color: white;
   font-size: 1rem;
   height: 2rem;
   min-width: 5rem;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
   cursor: pointer;
   &.cancel {
     background: white;
@@ -20,7 +21,7 @@ const StyledButton = styled.button`
 
 interface Props {
   cancel?: boolean;
-  children: string;
+  children: React.ReactNode;
   onClick: () => void;
 }
 

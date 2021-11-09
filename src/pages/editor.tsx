@@ -6,6 +6,10 @@ import { Button } from "../components/button";
 import { SaveModal } from "../components/save_modal";
 import { Link } from "react-router-dom";
 import { Header } from "../components/header";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
 
 const { useState } = React;
 
@@ -29,8 +33,11 @@ const TextArea = styled.textarea`
   border-right: 1px solid silver;
   border-top: 1px solid silver;
   font-size: 1rem;
-  padding: 0.5rem;
+  padding: 1rem;
   width: 100%;
+  &::placeholder {
+    color: #c5c5c5;
+  }
 `;
 
 const Preview = styled.div`
@@ -38,6 +45,10 @@ const Preview = styled.div`
   overflow-y: scroll;
   padding: 1rem;
   width: 100%;
+`;
+
+const StyledIcon = styled(FontAwesomeIcon)`
+  margin-left: 0.5rem;
 `;
 
 interface Props {
@@ -49,20 +60,23 @@ export const Editor: React.FC<Props> = (props) => {
   const { text, setText } = props;
   const [showModal, setShowModal] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
+  const eyeIcon = <StyledIcon icon={faEye} />;
+  const closeIcon = <StyledIcon icon={faEyeSlash} />;
+  const saveIcon = <StyledIcon icon={faSave} />;
   return (
     <>
       <HeaderArea>
         <Header title="Markdown Editor">
           {showPreview ? (
             <Button onClick={() => setShowPreview(false)}>
-              プレビューを非表示
+              プレビューを非表示{closeIcon}
             </Button>
           ) : (
             <Button onClick={() => setShowPreview(true)}>
-              プレビューを表示
+              プレビューを表示 {eyeIcon}
             </Button>
           )}
-          <Button onClick={() => setShowModal(true)}>保存する</Button>
+          <Button onClick={() => setShowModal(true)}>保存する{saveIcon}</Button>
           <Link to="/history">履歴を見る</Link>
         </Header>
       </HeaderArea>
@@ -70,6 +84,7 @@ export const Editor: React.FC<Props> = (props) => {
         <TextArea
           onChange={(event) => setText(event.target.value)}
           value={text}
+          placeholder={"こちらにテキストを入力してください"}
         />
         {showPreview && (
           <Preview>
