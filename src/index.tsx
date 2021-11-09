@@ -7,6 +7,7 @@ import { Editor } from "./pages/editor";
 const GlobalStyle = createGlobalStyle`
     body * {
       box-sizing: border-box;
+    }
     `;
 
 const Main = (
