@@ -1,7 +1,6 @@
 import { useState } from "react"; //reactから関数"useState"を読み込む
 
 export const useStateWithStorage = (
-  //カスタムフック"useStateWithStorage"を宣言
   init: string, //第一引数にinit=初期値を設定
   key: string //第二引数にローカルストレージから呼び出すキーを設定
 ): [string, (s: string) => void] => {
