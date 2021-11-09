@@ -10,6 +10,7 @@ const StyledButton = styled.button`
   height: 2rem;
   min-width: 5rem;
   padding: 0 1rem;
+  cursor: pointer;
   &.cancel {
     background: white;
     border: 1px solid gray;

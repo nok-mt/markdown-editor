@@ -1,10 +1,12 @@
 import * as React from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import { useStateWithStorage } from "../hooks/use_state_with_storage";
 import * as ReactMarkdown from "react-markdown";
 import { putMemo } from "../indexeddb/memos";
 import { Button } from "../components/button";
 import { SaveModal } from "../components/save_modal";
+import { Link } from "react-router-dom";
 
 const { useState } = React;
 
@@ -64,12 +66,16 @@ const StorageKey = "pages/editor:text";
 export const Editor: React.FC = () => {
   const [text, setText] = useStateWithStorage("", StorageKey);
   const [showModal, setShowModal] = useState(false);
+  const history = useHistory();
   return (
     <>
       <Header>
         Markdown Editor
         <HeaderControl>
           <Button onClick={() => setShowModal(true)}>保存する</Button>
+          <Button onClick={() => history.push("/history")} cancel>
+            履歴を見る
+          </Button>
         </HeaderControl>
       </Header>
       <Wrapper>
