@@ -22,6 +22,6 @@ module.exports = {
   devServer: {
     publicPath: "/dist/",
     hot: true,
-    open: true,
+    open: false,
   },
 };
