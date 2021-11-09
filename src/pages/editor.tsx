@@ -15,12 +15,7 @@ const Wrapper = styled.div`
   position: fixed;
   right: 0;
   top: 3rem;
-`;
-
-const HeaderControl = styled.div`
-  height: 2rem;
   display: flex;
-  align-content: center;
 `;
 
 const HeaderArea = styled.div`
@@ -33,24 +28,16 @@ const HeaderArea = styled.div`
 const TextArea = styled.textarea`
   border-right: 1px solid silver;
   border-top: 1px solid silver;
-  bottom: 0;
   font-size: 1rem;
-  left: 0;
   padding: 0.5rem;
-  position: absolute;
-  top: 0;
-  width: 50vw;
+  width: 100%;
 `;
 
 const Preview = styled.div`
   border-top: 1px solid silver;
-  bottom: 0;
   overflow-y: scroll;
   padding: 1rem;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 50vw;
+  width: 100%;
 `;
 
 interface Props {
@@ -61,10 +48,20 @@ interface Props {
 export const Editor: React.FC<Props> = (props) => {
   const { text, setText } = props;
   const [showModal, setShowModal] = useState(false);
+  const [showPreview, setShowPreview] = useState(true);
   return (
     <>
       <HeaderArea>
         <Header title="Markdown Editor">
+          {showPreview ? (
+            <Button onClick={() => setShowPreview(false)}>
+              プレビューを非表示
+            </Button>
+          ) : (
+            <Button onClick={() => setShowPreview(true)}>
+              プレビューを表示
+            </Button>
+          )}
           <Button onClick={() => setShowModal(true)}>保存する</Button>
           <Link to="/history">履歴を見る</Link>
         </Header>
@@ -74,9 +71,11 @@ export const Editor: React.FC<Props> = (props) => {
           onChange={(event) => setText(event.target.value)}
           value={text}
         />
-        <Preview>
-          <ReactMarkdown>{text}</ReactMarkdown>
-        </Preview>
+        {showPreview && (
+          <Preview>
+            <ReactMarkdown>{text}</ReactMarkdown>
+          </Preview>
+        )}
       </Wrapper>
       {showModal && (
         <SaveModal
