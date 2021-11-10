@@ -1,6 +1,5 @@
 import * as React from "react";
 import styled from "styled-components";
-import * as ReactMarkdown from "react-markdown";
 import { putMemo } from "../indexeddb/memos";
 import { Button } from "../components/button";
 import { SaveModal } from "../components/save_modal";
@@ -10,9 +9,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
-import TestWorker from "worker-loader!../worker/test.ts";
+import ConvertMarkdownWorker from "worker-loader!../worker/convert_markdown_worker";
 
-const testWorker = new TestWorker();
+const convertMarkdownWorker = new ConvertMarkdownWorker();
 const { useState, useEffect } = React;
 
 const Wrapper = styled.div`
@@ -65,15 +64,16 @@ export const Editor: React.FC<Props> = (props) => {
   const eyeIcon = <StyledIcon icon={faEye} />;
   const closeIcon = <StyledIcon icon={faEyeSlash} />;
   const saveIcon = <StyledIcon icon={faSave} />;
+  const [html, setHtml] = useState("");
 
   useEffect(() => {
-    testWorker.onmessage = (event) => {
-      console.log("Main thread Received:", event.data);
+    convertMarkdownWorker.onmessage = (event) => {
+      setHtml(event.data.html);
     };
   }, []);
 
   useEffect(() => {
-    testWorker.postMessage(text);
+    convertMarkdownWorker.postMessage(text);
   }, [text]);
 
   return (
@@ -101,7 +101,7 @@ export const Editor: React.FC<Props> = (props) => {
         />
         {showPreview && (
           <Preview>
-            <ReactMarkdown>{text}</ReactMarkdown>
+            <div dangerouslySetInnerHTML={{ __html: html }} />
           </Preview>
         )}
       </Wrapper>
