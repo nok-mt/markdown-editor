@@ -10,8 +10,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
+import TestWorker from "worker-loader!../worker/test.ts";
 
-const { useState } = React;
+const testWorker = new TestWorker();
+const { useState, useEffect } = React;
 
 const Wrapper = styled.div`
   bottom: 0;
@@ -63,6 +65,17 @@ export const Editor: React.FC<Props> = (props) => {
   const eyeIcon = <StyledIcon icon={faEye} />;
   const closeIcon = <StyledIcon icon={faEyeSlash} />;
   const saveIcon = <StyledIcon icon={faSave} />;
+
+  useEffect(() => {
+    testWorker.onmessage = (event) => {
+      console.log("Main thread Received:", event.data);
+    };
+  }, []);
+
+  useEffect(() => {
+    testWorker.postMessage(text);
+  }, [text]);
+
   return (
     <>
       <HeaderArea>
